@@ -1,17 +1,26 @@
 import { createStore } from "vuex";
-
+const API_URL = "https://lxp-api-develop.azure-api.net/DevStage/courses/discovery-paginated-semantic?page=1&page_size=20&semantic_size=4&language=en";
 const store = createStore({
     state() {
         return{
-            count: 0,
+            list: [],
         }
     },
     getters: {
-        getCount: (state) => state.count,
+        getList: (state) => state.list,
     },
     mutations: {
-        updateCount: (state, value) => {
-            state.count = value;
+        updateList: (state, value) => {
+            state.list = value;
+        }
+    },
+    actions: {
+        getList: ({commit}) => {
+            fetch(API_URL).then(res => res.json())
+            .then(res => {
+                console.log(res.results);
+                commit('updateList', res.results);
+            })
         }
     }
 })
